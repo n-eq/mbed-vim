@@ -43,7 +43,7 @@ function! MbedGetTargetandToolchain( force )
 		let l:toolchain = system('mbed toolchain')
 		if l:toolchain == "" " no toolchain set
 			" XXX: no need for the second argument ??
-			let g:mbed_toolchain = input( "Please choose a toolchain (ARM, GCC_ARM, IAR)", l:toolchain) 
+			let g:mbed_toolchain = input( "Please choose a toolchain (ARM, GCC_ARM, IAR): ", l:toolchain) 
 		else
 			let g:mbed_toolchain = l:toolchain
 		endif
