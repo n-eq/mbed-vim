@@ -8,11 +8,11 @@
 " XXX: does it work without 'workon mbed-os' previously executed??
 "
 " In command mode:
-"		<leader>mb: run 'mbed compile' on the current application
-"		<leader>mbv: run 'mbed compile -v' on the current application
-"		<leader>mbV: run 'mbed compile -vv' on the current application
-"		<leader>mbc: run 'mbed compile -c' on the current application
-"		<F11>: set the current application target and toolchain
+"   <leader>mb: run 'mbed compile' on the current application
+"	<leader>mbv: run 'mbed compile -v' on the current application
+"	<leader>mbV: run 'mbed compile -vv' on the current application
+"	<leader>mbc: run 'mbed compile -c' on the current application
+"	<F11>: set the current application target and toolchain
 "
 
 " Global variables
@@ -53,30 +53,37 @@ endfunction
 " Execute 'mbed compile' in the background
 function! MbedCompile()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa<CR> :!mbed compile'
+	execute 'wa<CR> :!mbed compile<CR>'
 endfunction
 
 " Execute 'mbed compile -c' in the background
 function! MbedCompileClean()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa<CR> :! mbed compile -c'
+	execute 'wa<CR> :! mbed compile -c<CR>'
+endfunction
+
+" Execute 'mbed compile -f' in the background
+function! MbedCompileFlash()
+	call MbedGetTargetandToolchain ( 0 ) 
+	execute 'wa<CR> :! mbed compile -c -f<CR>'
 endfunction
 
 " Execute 'mbed compile -v' in the background
 function! MbedCompileVerbose()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa<CR> :! mbed compile -v'
+	execute 'wa<CR> :! mbed compile -v<CR>'
 endfunction
 
 " Execute 'mbed compile -vv' in the background
 function! MbedCompileVVerbose()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa<CR> :! mbed compile -vv'
+	execute 'wa<CR> :! mbed compile -vv<CR>'
 endfunction
 
 " command-mode mappings
 map <F11> :call MbedGetTargetandToolchain(1)<CR>
 map <leader>mb :call MbedCompile()<CR>
 map <leader>mbc :call MbedCompileClean()<CR>
+map <leader>mbf :call MbedCompileFlash()<CR>
 map <leader>mbv :call MbedCompileVerbose()<CR>
 map <leader>mbV :call MbedCompileVVerbose()<CR>
