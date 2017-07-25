@@ -53,25 +53,25 @@ endfunction
 " Execute 'mbed compile' in the background
 function! MbedCompile()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa <ESC> :!mbed compile'
+	execute 'wa<CR> :!mbed compile'
 endfunction
 
 " Execute 'mbed compile -c' in the background
 function! MbedCompileClean()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa <ESC> :! mbed compile -c'
+	execute 'wa<CR> :! mbed compile -c'
 endfunction
 
 " Execute 'mbed compile -v' in the background
 function! MbedCompileVerbose()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa <ESC> :! mbed compile -v'
+	execute 'wa<CR> :! mbed compile -v'
 endfunction
 
 " Execute 'mbed compile -vv' in the background
 function! MbedCompileVVerbose()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa <ESC> :! mbed compile -vv'
+	execute 'wa<CR> :! mbed compile -vv'
 endfunction
 
 " command-mode mappings
