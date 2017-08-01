@@ -14,6 +14,7 @@
 "	<leader>mbc: run 'mbed compile -c' on the current application
 "	<leader>mbf: run 'mbed compile -f' on the current application
 "	<F11>: set the current application target and toolchain
+"   :
 "
 
 " Global variables
@@ -86,6 +87,57 @@ function! MbedCompileVVerbose()
 	execute 'wa'
     execute '!mbed compile -vv'
 endfunction
+
+function! AddLibrary(libraryName)
+    " XXX: maybe define the command as a variable and then execute it?
+    " let @t = "mbed add " . a:libraryName
+    " normal @t
+    execute '!mbed add ' . a:libraryName
+endfunction
+
+function! PromptForLibraryToAdd()
+    let l:library_name = input("Please enter the name/URL of the library to add: ")
+    call AddLibrary(l:library_name)
+endfunction
+
+" TESTME
+function! MbedList()
+    let @o = system("mbed ls")
+    " XXX: if @o == "" ??
+    if !empty(@o)
+        " no output 
+        new
+        silent put=@o
+        " Delete empty lines
+        execute "g/^$/d"
+        normal 1G
+        let l:newheight = line("$")
+        " winheight: hight of the current window
+        if l:newheight < winheight(0)
+            exe "resize " . l:newheight
+        endif
+    else
+        echo "@o is empty.."
+    endif
+endfunction
+
+" TODO: remove?
+function! ConfigureOutputWindow()
+    set buftype=nofile
+    normal $G
+    while getline(".") == "."
+        normal dd
+    endwhile
+    normal 1G
+    " total number of lines
+    let l:newheight = line("$")
+    " if # of lines < height of the buffer
+    if l:newheight < winheight(0)
+        " increase buffer height
+        exe "resize " . l:newheight
+    endif
+endfunction
+
 
 " command-mode mappings
 map <F11> :call MbedGetTargetandToolchain(1)<CR>
