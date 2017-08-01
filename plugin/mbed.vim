@@ -12,6 +12,7 @@
 "	<leader>mbv: run 'mbed compile -v' on the current application
 "	<leader>mbV: run 'mbed compile -vv' on the current application
 "	<leader>mbc: run 'mbed compile -c' on the current application
+"	<leader>mbf: run 'mbed compile -f' on the current application
 "	<F11>: set the current application target and toolchain
 "
 
@@ -53,31 +54,37 @@ endfunction
 " Execute 'mbed compile' in the background
 function! MbedCompile()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa<CR> :!mbed compile<CR>'
+	execute 'wa'
+    execute '!mbed compile' 
+    " TODO: make the two executes in the same line
 endfunction
 
 " Execute 'mbed compile -c' in the background
 function! MbedCompileClean()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa<CR> :! mbed compile -c<CR>'
+	execute 'wa'
+    execute '!mbed compile -c'
 endfunction
 
 " Execute 'mbed compile -f' in the background
 function! MbedCompileFlash()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa<CR> :! mbed compile -c -f<CR>'
+	execute 'wa'
+    execute '!mbed compile -f'
 endfunction
 
 " Execute 'mbed compile -v' in the background
 function! MbedCompileVerbose()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa<CR> :! mbed compile -v<CR>'
+	execute 'wa'
+    execute '!mbed compile -v'
 endfunction
 
 " Execute 'mbed compile -vv' in the background
 function! MbedCompileVVerbose()
 	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa<CR> :! mbed compile -vv<CR>'
+	execute 'wa'
+    execute '!mbed compile -vv'
 endfunction
 
 " command-mode mappings
