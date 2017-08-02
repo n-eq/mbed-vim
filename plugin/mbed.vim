@@ -8,13 +8,12 @@
 " XXX: does it work without 'workon mbed-os' previously executed??
 "
 " In command mode:
-"   <leader>mb: run 'mbed compile' on the current application
-"	<leader>mbv: run 'mbed compile -v' on the current application
-"	<leader>mbV: run 'mbed compile -vv' on the current application
-"	<leader>mbc: run 'mbed compile -c' on the current application
-"	<leader>mbf: run 'mbed compile -f' on the current application
+"   <leader>mb:  Compile the current application
+"	<leader>mbv: Compile the current application in verbose mode
+"	<leader>mbV: Compile the current application in very verbose mode
+"	<leader>mbc: Clean the build directory and compile the current application
+"	<leader>mbf: Compile and flash the built firmware onto a connected target
 "	<F11>: set the current application target and toolchain
-"   :
 "
 
 " Global variables
@@ -52,7 +51,6 @@ function! MbedGetTargetandToolchain( force )
 	endif
 endfunction
 
-" Execute 'mbed compile' in the background
 function! MbedCompile()
 	call MbedGetTargetandToolchain ( 0 ) 
 	execute 'wa'
@@ -60,28 +58,24 @@ function! MbedCompile()
     " TODO: make the two executes in the same line
 endfunction
 
-" Execute 'mbed compile -c' in the background
 function! MbedCompileClean()
 	call MbedGetTargetandToolchain ( 0 ) 
 	execute 'wa'
     execute '!mbed compile -c'
 endfunction
 
-" Execute 'mbed compile -f' in the background
 function! MbedCompileFlash()
 	call MbedGetTargetandToolchain ( 0 ) 
 	execute 'wa'
     execute '!mbed compile -f'
 endfunction
 
-" Execute 'mbed compile -v' in the background
 function! MbedCompileVerbose()
 	call MbedGetTargetandToolchain ( 0 ) 
 	execute 'wa'
     execute '!mbed compile -v'
 endfunction
 
-" Execute 'mbed compile -vv' in the background
 function! MbedCompileVVerbose()
 	call MbedGetTargetandToolchain ( 0 ) 
 	execute 'wa'
@@ -104,7 +98,6 @@ function! PromptForLibraryToAdd()
     call AddLibrary(l:library_name)
 endfunction
 
-" TESTME
 function! MbedList()
     let @o = system("mbed ls")
     " XXX: if @o == "" ??
