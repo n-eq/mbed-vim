@@ -95,6 +95,10 @@ function! AddLibrary(libraryName)
     execute '!mbed add ' . a:libraryName
 endfunction
 
+function! AddLibrary()
+    call PromptForLibraryToAdd()
+endfunction
+
 function! PromptForLibraryToAdd()
     let l:library_name = input("Please enter the name/URL of the library to add: ")
     call AddLibrary(l:library_name)
@@ -112,6 +116,7 @@ function! MbedList()
         execute "g/^$/d"
         normal 1G
         let l:newheight = line("$")
+        let l:newheight += 1
         " winheight: hight of the current window
         if l:newheight < winheight(0)
             exe "resize " . l:newheight
