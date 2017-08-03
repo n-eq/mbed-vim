@@ -18,70 +18,74 @@
 " Global variables
 " XXX: variables should be local to the current window or global?
 if !exists( "g:mbed_target" )
-	let g:mbed_target = ""
+  let g:mbed_target = ""
 endif
 
 if !exists( "g:mbed_toolchain" )
-	let g:mbed_toolchain = ""
+  let g:mbed_toolchain = ""
 endif
 
 function! MbedGetTargetandToolchain( force )
-	if g:mbed_target == "" || a:force != 0
-		" if has("win32") " TODO
-		let l:target = system('mbed target')
-		" no target set
-		if l:target == "" 
-			" XXX: no need for a second argument??
-			let g:mbed_target = input( "Please enter your mbed target name: ", l:target) 
-		else
-			let g:mbed_target = l:target
-		endif
-	endif
+  if g:mbed_target == "" || a:force != 0
+    " if has("win32") " TODO
+    let l:target = system('mbed target')
+    " no target set
+    if l:target == "" 
+      " XXX: no need for a second argument??
+      let g:mbed_target = input( "Please enter your mbed target name: ", l:target) 
+    else
+      let g:mbed_target = l:target
+    endif
+  endif
 
-	if g:mbed_toolchain == "" || a:force != 0
-		" if has("win32") " TODO
-		let l:toolchain = system('mbed toolchain')
-		if l:toolchain == "" " no toolchain set
-			" XXX: no need for the second argument ??
-			let g:mbed_toolchain = input( "Please choose a toolchain (ARM, GCC_ARM, IAR): ", l:toolchain) 
-		else
-			let g:mbed_toolchain = l:toolchain
-		endif
-	endif
+  if g:mbed_toolchain == "" || a:force != 0
+    " if has("win32") " TODO
+    let l:toolchain = system('mbed toolchain')
+    if l:toolchain == "" " no toolchain set
+      " XXX: no need for the second argument ??
+      let g:mbed_toolchain = input( "Please choose a toolchain (ARM, GCC_ARM, IAR): ", l:toolchain) 
+    else
+      let g:mbed_toolchain = l:toolchain
+    endif
+  endif
 endfunction
 
 function! MbedNew()
-    execute "!mbed new ."
+  execute "!mbed new ."
+endfunction
+
+function! MbedDeploy()
+  execute "!mbed deploy"
 endfunction
 
 function! MbedCompile()
-	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa'
+  call MbedGetTargetandToolchain ( 0 ) 
+  execute 'wa'
   execute '!mbed compile' 
   " TODO: make the two executes in the same line
 endfunction
 
 function! MbedCompileClean()
-	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa'
-   execute '!mbed compile -c'
+  call MbedGetTargetandToolchain ( 0 ) 
+  execute 'wa'
+  execute '!mbed compile -c'
 endfunction
 
 function! MbedCompileFlash()
-	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa'
-    execute '!mbed compile -f'
+  call MbedGetTargetandToolchain ( 0 ) 
+  execute 'wa'
+  execute '!mbed compile -f'
 endfunction
 
 function! MbedCompileVerbose()
-	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa'
+  call MbedGetTargetandToolchain ( 0 ) 
+  execute 'wa'
   execute '!mbed compile -v'
 endfunction
 
 function! MbedCompileVVerbose()
-	call MbedGetTargetandToolchain ( 0 ) 
-	execute 'wa'
+  call MbedGetTargetandToolchain ( 0 ) 
+  execute 'wa'
   execute '!mbed compile -vv'
 endfunction
 
@@ -115,7 +119,7 @@ function! MbedList()
     let l:newheight += 1
     " winheight: hight of the current window
     if l:newheight < winheight(0)
-        exe "resize " . l:newheight
+      exe "resize " . l:newheight
     endif
   else
     echo "@o is empty.."
