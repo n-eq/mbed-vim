@@ -61,8 +61,18 @@ endfunction
 function! MbedCompile()
   call MbedGetTargetandToolchain ( 0 ) 
   execute 'wa'
-  execute '!mbed compile' 
-  " TODO: make the two executes in the same line
+  let @o = system("mbed compile")
+  if !empty(@o)
+    new 
+    set buftype=nofile
+    silent put=@o
+    execute "g/^$/d"
+    normal 1G
+  endif
+  " horizontal split -> vertical split, TODO: do it more elegantly....
+  normal <C-w>t<C-w>H 
+  " TODO: find "Image: " pattern in output and don't split (compilation 100%
+  " OK) if no compilation error
 endfunction
 
 function! MbedCompileClean()
