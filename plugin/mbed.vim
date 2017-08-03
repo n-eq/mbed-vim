@@ -5,15 +5,14 @@
 " This file contains routines that may be used to execute mbed CLI commands
 " from within VIM. It depends on mbed OS. You must have mbed CLI correctly
 " installed (see https://github.com/ARMmbed/mbed-cli#installation).
-" XXX: does it work without 'workon mbed-os' previously executed??
 "
 " In command mode:
-"   <leader>mb:  Compile the current application
-"	<leader>mbv: Compile the current application in verbose mode
-"	<leader>mbV: Compile the current application in very verbose mode
-"	<leader>mbc: Clean the build directory and compile the current application
-"	<leader>mbf: Compile and flash the built firmware onto a connected target
-"	<F11>: set the current application target and toolchain
+" <leader>mb:  Compile the current application
+" <leader>mbv: Compile the current application in verbose mode
+" <leader>mbV: Compile the current application in very verbose mode
+" <leader>mbc: Clean the build directory and compile the current application
+" <leader>mbf: Compile and flash the built firmware onto a connected target
+" <F11>: set the current application's target and toolchain
 "
 
 " Global variables
@@ -51,17 +50,21 @@ function! MbedGetTargetandToolchain( force )
 	endif
 endfunction
 
+function! MbedNew()
+    execute "!mbed new ."
+endfunction
+
 function! MbedCompile()
 	call MbedGetTargetandToolchain ( 0 ) 
 	execute 'wa'
-    execute '!mbed compile' 
-    " TODO: make the two executes in the same line
+  execute '!mbed compile' 
+  " TODO: make the two executes in the same line
 endfunction
 
 function! MbedCompileClean()
 	call MbedGetTargetandToolchain ( 0 ) 
 	execute 'wa'
-    execute '!mbed compile -c'
+   execute '!mbed compile -c'
 endfunction
 
 function! MbedCompileFlash()
@@ -73,67 +76,67 @@ endfunction
 function! MbedCompileVerbose()
 	call MbedGetTargetandToolchain ( 0 ) 
 	execute 'wa'
-    execute '!mbed compile -v'
+  execute '!mbed compile -v'
 endfunction
 
 function! MbedCompileVVerbose()
 	call MbedGetTargetandToolchain ( 0 ) 
 	execute 'wa'
-    execute '!mbed compile -vv'
+  execute '!mbed compile -vv'
 endfunction
 
 function! AddLibrary(libraryName)
-    " XXX: maybe define the command as a variable and then execute it?
-    " let @t = "mbed add " . a:libraryName
-    " normal @t
-    execute '!mbed add ' . a:libraryName
+  " XXX: maybe define the command as a variable and then execute it?
+  " let @t = "mbed add " . a:libraryName
+  " normal @t
+  execute '!mbed add ' . a:libraryName
 endfunction
 
 function! AddLibrary()
-    call PromptForLibraryToAdd()
+  call PromptForLibraryToAdd()
 endfunction
 
 function! PromptForLibraryToAdd()
-    let l:library_name = input("Please enter the name/URL of the library to add: ")
-    call AddLibrary(l:library_name)
+  let l:library_name = input("Please enter the name/URL of the library to add: ")
+  call AddLibrary(l:library_name)
 endfunction
 
 function! MbedList()
-    let @o = system("mbed ls")
-    " XXX: if @o == "" ??
-    if !empty(@o)
-        " no output 
-        new
-        silent put=@o
-        " Delete empty lines
-        execute "g/^$/d"
-        normal 1G
-        let l:newheight = line("$")
-        let l:newheight += 1
-        " winheight: hight of the current window
-        if l:newheight < winheight(0)
-            exe "resize " . l:newheight
-        endif
-    else
-        echo "@o is empty.."
+  let @o = system("mbed ls")
+  " XXX: if @o == "" ??
+  if !empty(@o)
+    " no output 
+    new
+    silent put=@o
+    " Delete empty lines
+    execute "g/^$/d"
+    normal 1G
+    let l:newheight = line("$")
+    let l:newheight += 1
+    " winheight: hight of the current window
+    if l:newheight < winheight(0)
+        exe "resize " . l:newheight
     endif
+  else
+    echo "@o is empty.."
+  endif
 endfunction
 
 " TODO: remove?
 function! ConfigureOutputWindow()
-    set buftype=nofile
-    normal $G
-    while getline(".") == "."
-        normal dd
-    endwhile
-    normal 1G
-    " total number of lines
-    let l:newheight = line("$")
-    " if # of lines < height of the buffer
-    if l:newheight < winheight(0)
-        " increase buffer height
-        exe "resize " . l:newheight
-    endif
+  set buftype=nofile
+  normal $G
+  while getline(".") == "."
+    normal dd
+  endwhile
+  normal 1G
+  " total number of lines
+  let l:newheight = line("$")
+  " if # of lines < height of the buffer
+  if l:newheight < winheight(0)
+    " increase buffer height
+    exe "resize " . l:newheight
+  endif
 endfunction
 
 

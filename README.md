@@ -1,5 +1,5 @@
-# vim-mbed
-Execute mbed-CLI commands from within VIM
+# mbed-vim
+Execute mbed-CLI commands from within Vim.
 
 ## Installation
 ```sh
