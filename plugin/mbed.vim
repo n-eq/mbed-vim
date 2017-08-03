@@ -64,6 +64,7 @@ function! MbedCompile()
   let @o = system("mbed compile")
   if !empty(@o)
     new 
+    let g:error_buffer_number = bufnr('%')
     set buftype=nofile
     silent put=@o
     execute "g/^$/d"
@@ -73,6 +74,13 @@ function! MbedCompile()
   normal <C-w>t<C-w>H 
   " TODO: find "Image: " pattern in output and don't split (compilation 100%
   " OK) if no compilation error
+endfunction
+
+" Close compilation error buffer opened due to mbed compile call
+function! CloseErrorBuffer()
+  if (exists("g:error_buffer_number"))
+    execute "bdelete " . g:error_buffer_number
+  endif
 endfunction
 
 function! MbedCompileClean()
@@ -161,3 +169,4 @@ map <leader>mbc :call MbedCompileClean()<CR>
 map <leader>mbf :call MbedCompileFlash()<CR>
 map <leader>mbv :call MbedCompileVerbose()<CR>
 map <leader>mbV :call MbedCompileVVerbose()<CR>
+map <F10> :call CloseErrorBuffer<CR>
