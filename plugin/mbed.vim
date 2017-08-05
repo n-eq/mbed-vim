@@ -8,6 +8,8 @@
 "
 " In command mode:
 " <leader>mb:  Compile the current application
+:wa
+
 " <leader>mbv: Compile the current application in verbose mode
 " <leader>mbV: Compile the current application in very verbose mode
 " <leader>mbc: Clean the build directory and compile the current application
@@ -107,20 +109,33 @@ function! MbedCompileVVerbose()
   execute '!mbed compile -vv'
 endfunction
 
-function! AddLibrary(libraryName)
+function! MbedAddLibary(libraryName)
   " XXX: maybe define the command as a variable and then execute it?
   " let @t = "mbed add " . a:libraryName
   " normal @t
   execute '!mbed add ' . a:libraryName
 endfunction
 
-function! AddLibrary()
+function! MbedAddLibary()
   call PromptForLibraryToAdd()
 endfunction
 
 function! PromptForLibraryToAdd()
   let l:library_name = input("Please enter the name/URL of the library to add: ")
-  call AddLibrary(l:library_name)
+  call MbedAddLibary(l:library_name)
+endfunction
+
+function! MbedRemoveLibary(libraryName)
+  execute '!mbed remove ' . a:libraryName
+endfunction
+
+function! MbedRemoveLibary()
+  call PromptForLibraryToRemove()
+endfunction
+
+function! PromptForLibraryToRemove()
+  let l:library_name = input("Please enter the name/URL of the library to remove: ")
+  call MbedRemoveLibary(l:library_name)
 endfunction
 
 function! MbedList()
