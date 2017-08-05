@@ -1,4 +1,6 @@
 # mbed-vim
+[![Build Status](https://travis-ci.org/nelqatib/mbed-vim.svg?branch=master)](https://travis-ci.org/nelqatib/mbed-vim)
+
 Execute mbed-CLI commands from within Vim.
 
 ## Installation
