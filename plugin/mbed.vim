@@ -7,14 +7,13 @@
 " installed (see https://github.com/ARMmbed/mbed-cli#installation).
 "
 " In command mode:
-" <leader>mb:  Compile the current application
-:wa
-
-" <leader>mbv: Compile the current application in verbose mode
-" <leader>mbV: Compile the current application in very verbose mode
-" <leader>mbc: Clean the build directory and compile the current application
-" <leader>mbf: Compile and flash the built firmware onto a connected target
-" <F11>: set the current application's target and toolchain
+" <leader>c:  Compile the current application
+" <leader>cv: Compile the current application in verbose mode
+" <leader>cV: Compile the current application in very verbose mode
+" <leader>cc: Clean the build directory and compile the current application
+" <leader>cf: Compile and flash the built firmware onto a connected target
+" <F9>:  Close the error buffer (when open)
+" <F11>: Set the current application's target and toolchain
 "
 
 " Global variables
