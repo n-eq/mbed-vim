@@ -12,6 +12,7 @@
 " <leader>cV: Compile the current application in very verbose mode
 " <leader>cc: Clean the build directory and compile the current application
 " <leader>cf: Compile and flash the built firmware onto a connected target
+" <leader>n:  Create a new mbed program or library
 " <F9>:  Close the error buffer (when open)
 " <F11>: Set the current application's target and toolchain
 "
@@ -178,9 +179,10 @@ endfunction
 
 " command-mode mappings
 map <F11> :call MbedGetTargetandToolchain(1)<CR>
-map <leader>mb :call MbedCompile()<CR>
-map <leader>mbc :call MbedCompileClean()<CR>
-map <leader>mbf :call MbedCompileFlash()<CR>
-map <leader>mbv :call MbedCompileVerbose()<CR>
-map <leader>mbV :call MbedCompileVVerbose()<CR>
+map <leader>c  :call MbedCompile()<CR>
+map <leader>cc :call MbedCompileClean()<CR>
+map <leader>cf :call MbedCompileFlash()<CR>
+map <leader>cv :call MbedCompileVerbose()<CR>
+map <leader>cV :call MbedCompileVVerbose()<CR>
+map <leader>n  :call MbedNew()<CR>
 map <F10> :call CloseErrorBuffer<CR>
