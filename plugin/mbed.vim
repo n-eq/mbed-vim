@@ -13,8 +13,9 @@
 " <leader>cc: Clean the build directory and compile the current application
 " <leader>cf: Compile and flash the built firmware onto a connected target
 " <leader>n:  Create a new mbed program or library
-" <F9>:  Close the error buffer (when open)
-" <F11>: Set the current application's target and toolchain
+" <leader>s:  Synchronize all library and dependency references
+" <F9>:       Close the error buffer (when open)
+" <F11>:      Set the current application's target and toolchain
 "
 
 " Global variables
@@ -69,12 +70,17 @@ function! MbedCompile()
   execute 'wa'
   let @o = system("mbed compile")
   if !empty(@o)
-    new 
-    let g:error_buffer_number = bufnr('%')
-    set buftype=nofile
-    silent put=@o
-    execute "g/^$/d"
-    normal 1G
+    " pattern not found
+    if match(getreg("o"), "Image") == -1
+      new 
+      let g:error_buffer_number = bufnr('%')
+      set buftype=nofile
+      silent put=@o
+      execute "g/^$/d"
+      normal 1G
+    else
+      echo "Compilation ended successfully."
+    endif
   endif
   " horizontal split -> vertical split, TODO: do it more elegantly....
   normal <C-w>t<C-w>H 
@@ -156,7 +162,7 @@ function! MbedList()
     let l:newheight += 1
     " winheight: hight of the current window
     if l:newheight < winheight(0)
-      exe "resize " . l:newheight
+      execute "resize " . l:newheight
     endif
   else
     echo "@o is empty.."
@@ -176,7 +182,7 @@ function! ConfigureOutputWindow()
   " if # of lines < height of the buffer
   if l:newheight < winheight(0)
     " increase buffer height
-    exe "resize " . l:newheight
+    execute "resize " . l:newheight
   endif
 endfunction
 
