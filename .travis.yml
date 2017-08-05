@@ -4,3 +4,4 @@ before_script:
 
 script:
       - sh /tmp/vim-vimlint/bin/vimlint.sh -l /tmp/vim-vimlint -p /tmp/vim-vimlparser -v autoload
+
