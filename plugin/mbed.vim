@@ -56,6 +56,10 @@ function! MbedNew()
   execute "!mbed new ."
 endfunction
 
+function! MbedSync()
+  execute "!mbed sync"
+endfunction
+
 function! MbedDeploy()
   execute "!mbed deploy"
 endfunction
@@ -185,4 +189,5 @@ map <leader>cf :call MbedCompileFlash()<CR>
 map <leader>cv :call MbedCompileVerbose()<CR>
 map <leader>cV :call MbedCompileVVerbose()<CR>
 map <leader>n  :call MbedNew()<CR>
+map <leader>n  :call MbedSync()<CR>
 map <F10> :call CloseErrorBuffer<CR>
