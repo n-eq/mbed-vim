@@ -196,4 +196,4 @@ map <leader>cv :call MbedCompileVerbose()<CR>
 map <leader>cV :call MbedCompileVVerbose()<CR>
 map <leader>n  :call MbedNew()<CR>
 map <leader>n  :call MbedSync()<CR>
-map <F10> :call CloseErrorBuffer<CR>
+map <F9> :call CloseErrorBuffer<CR>
