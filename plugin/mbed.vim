@@ -68,17 +68,33 @@ endfunction
 function! MbedCompile()
   call MbedGetTargetandToolchain ( 0 ) 
   execute 'wa'
-  let @o = system("mbed compile")
+  let @o = system("ls")
+"   let @o = system("tree")
   if !empty(@o)
     " <Image> pattern not found
     if match(getreg("o"), "Image") == -1
-      vnew 
-      if (exists("g:error_buffer_number"))
-        " FIXME: erase the buffer, to reload the error output
-        bdelete "g:error_buffer_number"
+      if exists("g:error_buffer_number")
+        if bufexists(g:error_buffer_number)
+          " buffer exists and is visible
+          if bufwinnr(g:error_buffer_number)
+            echoe "yes."
+            call CleanErrorBuffer()
+          else
+            echoe "No...!"
+            execute "vert belowright sb " . g:error_buffer_number
+          endif
+        else
+          vnew
+          let g:error_buffer_number = bufnr('%')
+          set buftype=nofile
+        endif
+      else
+        vnew
+        let g:error_buffer_number = bufnr('%')
+        set buftype=nofile
       endif
-      let g:error_buffer_number = bufnr('%')
-      set buftype=nofile
+      execute "set switchbuf+=useopen"
+      execute "sbuffer " . g:error_buffer_number
       " paste register content to buffer
       silent put=@o
       " delete empty lines
@@ -88,6 +104,14 @@ function! MbedCompile()
       echo "Compilation ended successfully."
     endif
   endif
+endfunction
+
+" Clear the error buffer's content
+function! CleanErrorBuffer()
+  " see  https://stackoverflow.com/questions/28392784/vim-drop-for-buffer-jump-to-window-if-buffer-is-already-open-with-tab-autoco
+  execute "set switchbuf+=useopen"
+  execute "sbuffer " . g:error_buffer_number
+  normal ggdG
 endfunction
 
 " Close compilation error buffer opened due to mbed compile call
