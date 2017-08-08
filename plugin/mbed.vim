@@ -70,22 +70,24 @@ function! MbedCompile()
   execute 'wa'
   let @o = system("mbed compile")
   if !empty(@o)
-    " pattern not found
+    " <Image> pattern not found
     if match(getreg("o"), "Image") == -1
-      new 
+      vnew 
+      if (exists("g:error_buffer_number"))
+        " FIXME: erase the buffer, to reload the error output
+        bdelete "g:error_buffer_number"
+      endif
       let g:error_buffer_number = bufnr('%')
       set buftype=nofile
+      " paste register content to buffer
       silent put=@o
+      " delete empty lines
       execute "g/^$/d"
       normal 1G
     else
       echo "Compilation ended successfully."
     endif
   endif
-  " horizontal split -> vertical split, TODO: do it more elegantly....
-  normal <C-w>t<C-w>H 
-  " TODO: find "Image: " pattern in output and don't split (compilation 100%
-  " OK) if no compilation error
 endfunction
 
 " Close compilation error buffer opened due to mbed compile call
