@@ -28,6 +28,7 @@ if !exists( "g:mbed_toolchain" )
   let g:mbed_toolchain = ""
 endif
 
+" TODO: test
 function! MbedGetTargetandToolchain( force )
   let l:mbed_tools_exist = system("which mbed")
   if l:mbed_tools_exist == ""
@@ -38,10 +39,8 @@ function! MbedGetTargetandToolchain( force )
       let l:target = system('mbed target')
       " no target set
       if l:target == "" 
-        " XXX: no need for a second argument??
         let g:mbed_target = input("Please enter your mbed target name: ") 
       elseif match(l:target, "ERROR") != -1
-        echo l:target
         return
       else
         let g:mbed_target = l:target
@@ -52,10 +51,8 @@ function! MbedGetTargetandToolchain( force )
       " if has("win32") " TODO
       let l:toolchain = system('mbed toolchain')
       if l:toolchain == "" " no toolchain set
-        " XXX: no need for the second argument ??
         let g:mbed_toolchain = input("Please choose a toolchain (ARM, GCC_ARM, IAR): ") 
       elseif match(l:toolchain, "ERROR") != -1
-        echo l:toolchain
         return
       else
         let g:mbed_toolchain = l:toolchain
