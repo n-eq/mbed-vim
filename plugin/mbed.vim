@@ -39,7 +39,7 @@ function! MbedGetTargetandToolchain( force )
       " no target set
       if l:target == "" 
         " XXX: no need for a second argument??
-        let g:mbed_target = input( "Please enter your mbed target name: ", l:target) 
+        let g:mbed_target = input("Please enter your mbed target name: ") 
       elseif match(l:target, "ERROR") != -1
         echo l:target
         return
@@ -53,7 +53,7 @@ function! MbedGetTargetandToolchain( force )
       let l:toolchain = system('mbed toolchain')
       if l:toolchain == "" " no toolchain set
         " XXX: no need for the second argument ??
-        let g:mbed_toolchain = input( "Please choose a toolchain (ARM, GCC_ARM, IAR): ", l:toolchain) 
+        let g:mbed_toolchain = input("Please choose a toolchain (ARM, GCC_ARM, IAR): ") 
       elseif match(l:toolchain, "ERROR") != -1
         echo l:toolchain
         return
