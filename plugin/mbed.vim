@@ -29,26 +29,37 @@ if !exists( "g:mbed_toolchain" )
 endif
 
 function! MbedGetTargetandToolchain( force )
-  if g:mbed_target == "" || a:force != 0
-    " if has("win32") " TODO
-    let l:target = system('mbed target')
-    " no target set
-    if l:target == "" 
-      " XXX: no need for a second argument??
-      let g:mbed_target = input( "Please enter your mbed target name: ", l:target) 
-    else
-      let g:mbed_target = l:target
+  let l:mbed_tools_exist = system("which mbed")
+  if l:mbed_tools_exist == ""
+    echoe "Couldn't find mbed CLI tools."
+  else
+    if g:mbed_target == "" || a:force != 0
+      " if has("win32") " TODO
+      let l:target = system('mbed target')
+      " no target set
+      if l:target == "" 
+        " XXX: no need for a second argument??
+        let g:mbed_target = input( "Please enter your mbed target name: ", l:target) 
+      elseif match(l:target, "ERROR") != -1
+        echo l:target
+        return
+      else
+        let g:mbed_target = l:target
+      endif
     endif
-  endif
 
-  if g:mbed_toolchain == "" || a:force != 0
-    " if has("win32") " TODO
-    let l:toolchain = system('mbed toolchain')
-    if l:toolchain == "" " no toolchain set
-      " XXX: no need for the second argument ??
-      let g:mbed_toolchain = input( "Please choose a toolchain (ARM, GCC_ARM, IAR): ", l:toolchain) 
-    else
-      let g:mbed_toolchain = l:toolchain
+    if g:mbed_toolchain == "" || a:force != 0
+      " if has("win32") " TODO
+      let l:toolchain = system('mbed toolchain')
+      if l:toolchain == "" " no toolchain set
+        " XXX: no need for the second argument ??
+        let g:mbed_toolchain = input( "Please choose a toolchain (ARM, GCC_ARM, IAR): ", l:toolchain) 
+      elseif match(l:toolchain, "ERROR") != -1
+        echo l:toolchain
+        return
+      else
+        let g:mbed_toolchain = l:toolchain
+      endif
     endif
   endif
 endfunction
@@ -65,22 +76,24 @@ function! MbedDeploy()
   execute "!mbed deploy"
 endfunction
 
+" TODO: refactor the buffer-related code below by creating a special function
 function! MbedCompile()
   call MbedGetTargetandToolchain ( 0 ) 
   execute 'wa'
-  let @o = system("ls")
-"   let @o = system("tree")
+  let @o = system("mbed compile")
+  " If the error buffer is visible (e.g. vsplit), we should simply switch to
+  " it and erase its content, then the content of the register can be freely
+  " pasted. In the case where the buffer doesn't exist (g:error_buffer_number = -1),
+  " it should be vnew'ed and the previously described process should continue.
   if !empty(@o)
     " <Image> pattern not found
     if match(getreg("o"), "Image") == -1
       if exists("g:error_buffer_number")
         if bufexists(g:error_buffer_number)
           " buffer exists and is visible
-          if bufwinnr(g:error_buffer_number)
-            echoe "yes."
+          if bufwinnr(g:error_buffer_number) > 0
             call CleanErrorBuffer()
           else
-            echoe "No...!"
             execute "vert belowright sb " . g:error_buffer_number
           endif
         else
@@ -99,7 +112,8 @@ function! MbedCompile()
       silent put=@o
       " delete empty lines
       execute "g/^$/d"
-      normal 1G
+      " go to last line
+      normal G
     else
       echo "Compilation ended successfully."
     endif
@@ -118,6 +132,7 @@ endfunction
 function! CloseErrorBuffer()
   if (exists("g:error_buffer_number"))
     execute "bdelete " . g:error_buffer_number
+    let g:error_buffer_number = -1
   endif
 endfunction
 
@@ -222,4 +237,4 @@ map <leader>cv :call MbedCompileVerbose()<CR>
 map <leader>cV :call MbedCompileVVerbose()<CR>
 map <leader>n  :call MbedNew()<CR>
 map <leader>s  :call MbedSync()<CR>
-map <F9> :call CloseErrorBuffer<CR>
+map <F9> :call CloseErrorBuffer()<CR>
