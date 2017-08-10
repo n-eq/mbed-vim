@@ -105,7 +105,7 @@ function! MbedDeploy()
   execute "!mbed deploy"
 endfunction
 
-function! PasteContentToErrorBuffer(content)
+function! PasteContentToErrorBuffer()
   if exists("g:error_buffer_number")
     if bufexists(g:error_buffer_number)
       " buffer exists and is visible
@@ -125,10 +125,10 @@ function! PasteContentToErrorBuffer(content)
     let g:error_buffer_number = bufnr('%')
   endif
 
-  call CleanErrorBuffer
+  call CleanErrorBuffer()
 
   " paste register content to buffer
-  silent put=a:content
+  silent put=@o
   " go to last line
   normal G
 endfunction
@@ -157,7 +157,7 @@ function! MbedCompile(flag)
   if !empty(@o)
     " <Image> pattern not found
     if match(getreg("o"), "Image") == -1
-      call PasteContentToErrorBuffer(@o)
+      call PasteContentToErrorBuffer()
     else
       echo "Compilation ended successfully."
     endif
