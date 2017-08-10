@@ -14,9 +14,9 @@
 " <leader>cf: Compile and flash the built firmware onto a connected target
 " <leader>n:  Create a new mbed program or library
 " <leader>s:  Synchronize all library and dependency references
+" <leader>t:  Find, build and run tests
 " <F9>:       Close the error buffer (when open)
 " <F11>:      Set the current application's target and toolchain
-"
 
 " Global variables
 " XXX: variables should be local to the current window or global?
@@ -28,7 +28,6 @@ if !exists( "g:mbed_toolchain" )
   let g:mbed_toolchain = ""
 endif
 
-" TODO: test
 function! MbedGetTargetandToolchain( force )
   let l:mbed_tools_exist = system("which mbed")
   if l:mbed_tools_exist == ""
@@ -107,8 +106,6 @@ function! MbedCompile()
       execute "sbuffer " . g:error_buffer_number
       " paste register content to buffer
       silent put=@o
-      " delete empty lines
-      execute "g/^$/d"
       " go to last line
       normal G
     else
@@ -224,14 +221,19 @@ function! ConfigureOutputWindow()
   endif
 endfunction
 
+" TODO
+function! MbedTest()
+
+endfunction
 
 " command-mode mappings
-map <F11> :call MbedGetTargetandToolchain(1)<CR>
+map <F11>      :call MbedGetTargetandToolchain(1)<CR>
 map <leader>c  :call MbedCompile()<CR>
-map <leader>C :call MbedCompileClean()<CR>
+map <leader>C  :call MbedCompileClean()<CR>
 map <leader>cf :call MbedCompileFlash()<CR>
 map <leader>cv :call MbedCompileVerbose()<CR>
 map <leader>cV :call MbedCompileVVerbose()<CR>
 map <leader>n  :call MbedNew()<CR>
 map <leader>s  :call MbedSync()<CR>
-map <F9> :call CloseErrorBuffer()<CR>
+map <leader>t  :call MbedTest()<CR>
+map <F9>       :call CloseErrorBuffer()<CR>
