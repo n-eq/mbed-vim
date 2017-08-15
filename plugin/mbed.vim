@@ -45,12 +45,6 @@
 "   is opened. You can close this buffer with <F9>. 
 "
 
-
-" TODO: transform MbedAdd* and MbedRemove* functions to take a variable number
-" of arguments (libraries to add/remove), see vim varags
-" (http://learnvimscriptthehardway.stevelosh.com/chapters/24.html)
-
-
 " Global variables
 " XXX: variables should be local to the current window or global?
 if !exists( "g:mbed_target" )
