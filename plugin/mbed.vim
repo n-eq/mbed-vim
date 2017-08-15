@@ -1,6 +1,6 @@
 " mbed.vim
 " author: marrakchino (nabilelqatib@gmail.com)
-" version: 0.1
+" version: 0.2
 "
 " This file contains routines that may be used to execute mbed CLI commands
 " from within VIM. It depends on mbed OS. Therefore, 
