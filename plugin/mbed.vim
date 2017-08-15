@@ -119,7 +119,7 @@ function! PasteContentToErrorBuffer(content)
     let g:error_buffer_number = bufnr('%')
   endif
 
-  call CleanErrorBuffer
+  call CleanErrorBuffer()
 
   " paste register content to buffer
   silent put=a:content
