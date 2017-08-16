@@ -148,7 +148,7 @@ endfunction
 function! MbedCompile(flag)
   call MbedGetTargetandToolchain ( 0 ) 
   execute 'wa'
-  let @o = system("!mbed compile" " -m " . g:mbed_target . " -t " . g:mbed_toolchain . " " . a:flag)
+  let @o = system("mbed compile" " -m " . g:mbed_target . " -t " . g:mbed_toolchain . " " . a:flag)
   if !empty(@o)
     " <Image> pattern not found
     if match(getreg("o"), "Image") == -1
