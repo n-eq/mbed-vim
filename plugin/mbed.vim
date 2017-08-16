@@ -179,7 +179,7 @@ function! PromptForLibraryToAdd()
   call MbedAdd(l:library_name)
 endfunction
 
-function! MbedRemove(libraryName)
+function! MbedRemove(...)
   if a:0 == 0
     call PromptForLibraryToRemove()
   else
