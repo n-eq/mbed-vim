@@ -209,7 +209,7 @@ endfunction
 " TODO
 function! MbedTest()
   execute 'wa'
-  let @t = system("!mbed test")
+  let @t = system("mbed test")
   if !empty(@t)
     " TODO: find a pattern in the output to notify that the tests were
     " successful
