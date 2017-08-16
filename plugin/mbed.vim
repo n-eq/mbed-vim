@@ -100,7 +100,7 @@ function! MbedDeploy()
   execute "!mbed deploy"
 endfunction
 
-function! PasteContentToErrorBuffer(content)
+function! PasteContentToErrorBuffer()
   if exists("g:error_buffer_number")
     if bufexists(g:error_buffer_number)
       " buffer exists and is visible
@@ -123,7 +123,7 @@ function! PasteContentToErrorBuffer(content)
   call CleanErrorBuffer()
 
   " paste register content to buffer
-  silent put=a:content
+  silent put=@o
   " go to last line
   normal G
 endfunction
@@ -152,37 +152,41 @@ function! MbedCompile(flag)
   if !empty(@o)
     " <Image> pattern not found
     if match(getreg("o"), "Image") == -1
-      call PasteContentToErrorBuffer(@o)
+      call PasteContentToErrorBuffer()
     else
       echo "Compilation ended successfully."
     endif
   endif
 endfunction
 
-function! MbedAddLibary(libraryName)
-  if a:libraryName == ""
+function! MbedAdd(...)
+  if a:0 == 0
     call PromptForLibraryToAdd()
   else
-    execute '!mbed add ' . a:libraryName
+    for library in a:000
+      execute '!mbed add ' . library
+    endfor
   endif
 endfunction
 
 function! PromptForLibraryToAdd()
   let l:library_name = input("Please enter the name/URL of the library to add: ")
-  call MbedAddLibary(l:library_name)
+  call MbedAdd(l:library_name)
 endfunction
 
-function! MbedRemoveLibary(libraryName)
-  if a:libraryName == ""
+function! MbedRemove(libraryName)
+  if a:0 == 0
     call PromptForLibraryToRemove()
   else
-    execute '!mbed remove ' . a:libraryName
+    for library in a:000
+      execute '!mbed remove ' . library
+    endfor
   endif
 endfunction
 
 function! PromptForLibraryToRemove()
   let l:library_name = input("Please enter the name/URL of the library to remove: ")
-  call MbedRemoveLibary(l:library_name)
+  call MbedRemove(l:library_name)
 endfunction
 
 function! MbedList()
@@ -230,13 +234,13 @@ map <leader>n  :call MbedNew()<CR>
 map <leader>s  :call MbedSync()<CR>
 map <leader>t  :call MbedTest()<CR>
 map <leader>d  :call MbedDeploy()<CR>
-map <leader>a  :call MbedAddLibary("")<CR>
-map <leader>r  :call MbedRemoveLibary("")<CR>
+map <leader>a  :call MbedAdd("")<CR>
+map <leader>r  :call MbedRemove("")<CR>
 map <F9>       :call CloseErrorBuffer()<CR>
 map <F11>      :call MbedGetTargetandToolchain(1)<CR>
 
 " commands
-command! -nargs=? Add :call MbedAddLibary("<args>")
-command! -nargs=? Remove :call MbedRemoveLibary("<args>")
+command! -nargs=? Add :call MbedAdd("<args>")
+command! -nargs=? Remove :call MbedRemove("<args>")
 command! -nargs=1 SetToolchain :let g:mbed_toolchain="<args>"
 command! -nargs=1 SetTarget :let g:mbed_target="<args>"
