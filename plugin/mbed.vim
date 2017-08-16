@@ -1,5 +1,6 @@
 " mbed.vim
 " author: marrakchino (nabilelqatib@gmail.com)
+" license: MIT (https://opensource.org/licenses/MIT)
 " version: 0.2
 "
 " This file contains routines that may be used to execute mbed CLI commands
