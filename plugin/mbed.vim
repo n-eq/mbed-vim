@@ -22,7 +22,7 @@
 " <leader>r:  Prompt for an mbed library to remove
 " <leader>l:  Display the dependency tree
 " <F9>:       Close the error buffer (when open)
-" <F11>:      Set the current application's target and toolchain 
+" <F12>:      Set the current application's target and toolchain 
 "
 " Add <library_name> --       Add the specified library. When no argument is given,
 "                             you are prompted for the name of the library
@@ -239,7 +239,7 @@ map <leader>a  :call MbedAdd("")<CR>
 map <leader>r  :call MbedRemove("")<CR>
 map <leader>l  :call MbedList()<CR>
 map <F9>       :call CloseErrorBuffer()<CR>
-map <F11>      :call MbedGetTargetandToolchain(1)<CR>
+map <F12>      :call MbedGetTargetandToolchain(1)<CR>
 
 " commands
 command! -nargs=? Add :call MbedAdd("<args>")
