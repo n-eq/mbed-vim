@@ -1,6 +1,7 @@
 " mbed.vim
 " author: marrakchino (nabilelqatib@gmail.com)
-" version: 0.1
+" license: MIT (https://opensource.org/licenses/MIT)
+" version: 0.2
 "
 " This file contains routines that may be used to execute mbed CLI commands
 " from within VIM. It depends on mbed OS. Therefore, 
@@ -19,8 +20,9 @@
 " <leader>d:  Import missing dependencies
 " <leader>a:  Prompt for an mbed library to add
 " <leader>r:  Prompt for an mbed library to remove
+" <leader>l:  Display the dependency tree
 " <F9>:       Close the error buffer (when open)
-" <F11>:      Set the current application's target and toolchain 
+" <F12>:      Set the current application's target and toolchain 
 "
 " Add <library_name> --       Add the specified library. When no argument is given,
 "                             you are prompted for the name of the library
@@ -44,12 +46,6 @@
 "   will refresh with the new output reloaded, and no additional buffer
 "   is opened. You can close this buffer with <F9>. 
 "
-
-
-" TODO: transform MbedAdd* and MbedRemove* functions to take a variable number
-" of arguments (libraries to add/remove), see vim varags
-" (http://learnvimscriptthehardway.stevelosh.com/chapters/24.html)
-
 
 " Global variables
 " XXX: variables should be local to the current window or global?
@@ -153,7 +149,7 @@ endfunction
 function! MbedCompile(flag)
   call MbedGetTargetandToolchain ( 0 ) 
   execute 'wa'
-  let @o = system("!mbed compile" . a:flag)
+  let @o = system("mbed compile " . "-m" . g:mbed_target . " -t " . g:mbed_toolchain . " " . a:flag)
   if !empty(@o)
     " <Image> pattern not found
     if match(getreg("o"), "Image") == -1
@@ -164,30 +160,34 @@ function! MbedCompile(flag)
   endif
 endfunction
 
-function! MbedAddLibary(libraryName)
-  if a:libraryName == ""
+function! MbedAdd(...)
+  if a:0 == 0
     call PromptForLibraryToAdd()
   else
-    execute '!mbed add ' . a:libraryName
+    for library in a:000
+      execute '!mbed add ' . library
+    endfor
   endif
 endfunction
 
 function! PromptForLibraryToAdd()
   let l:library_name = input("Please enter the name/URL of the library to add: ")
-  call MbedAddLibary(l:library_name)
+  call MbedAdd(l:library_name)
 endfunction
 
-function! MbedRemoveLibary(libraryName)
-  if a:libraryName == ""
+function! MbedRemove(...)
+  if a:0 == 0
     call PromptForLibraryToRemove()
   else
-    execute '!mbed remove ' . a:libraryName
+    for library in a:000
+      execute '!mbed remove ' . library
+    endfor
   endif
 endfunction
 
 function! PromptForLibraryToRemove()
   let l:library_name = input("Please enter the name/URL of the library to remove: ")
-  call MbedRemoveLibary(l:library_name)
+  call MbedRemove(l:library_name)
 endfunction
 
 function! MbedList()
@@ -206,18 +206,14 @@ function! MbedList()
     if l:newheight < winheight(0)
       execute "resize " . l:newheight
     endif
-  else
-    echo "@o is empty.."
   endif
 endfunction
 
-" TODO
 function! MbedTest()
   execute 'wa'
-  let @t = system("!mbed test")
+  let @t = system("mbed test")
   if !empty(@t)
-    " TODO: find a pattern in the output to notify that the tests were
-    " successful
+    " TODO: find a pattern in the output to notify that the tests were successful
     vnew
     set buftype=nofile
     silent put=@t
@@ -235,13 +231,14 @@ map <leader>n  :call MbedNew()<CR>
 map <leader>s  :call MbedSync()<CR>
 map <leader>t  :call MbedTest()<CR>
 map <leader>d  :call MbedDeploy()<CR>
-map <leader>a  :call MbedAddLibary("")<CR>
-map <leader>r  :call MbedRemoveLibary("")<CR>
+map <leader>a  :call MbedAdd("")<CR>
+map <leader>r  :call MbedRemove("")<CR>
+map <leader>l  :call MbedList()<CR>
 map <F9>       :call CloseErrorBuffer()<CR>
-map <F11>      :call MbedGetTargetandToolchain(1)<CR>
+map <F12>      :call MbedGetTargetandToolchain(1)<CR>
 
 " commands
-command! -nargs=? Add :call MbedAddLibary("<args>")
-command! -nargs=? Remove :call MbedRemoveLibary("<args>")
+command! -nargs=? Add :call MbedAdd("<args>")
+command! -nargs=? Remove :call MbedRemove("<args>")
 command! -nargs=1 SetToolchain :let g:mbed_toolchain="<args>"
 command! -nargs=1 SetTarget :let g:mbed_target="<args>"
