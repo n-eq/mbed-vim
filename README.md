@@ -9,13 +9,13 @@ Execute mbed-CLI commands from within Vim.
 
 ## Installation
 
-### 1. By cloning the repository
+* By cloning the repository
 ```sh
 $ git clone git@github.com:marrakchino/mbed-vim.git
 $ cp mbed-vim/plugin/mbed.vim ~/.vim/plugin
 ```
 
-### 2. By downloading and saving the plugin file in your `plugin` directory
+* By downloading and saving the plugin file in your `plugin` directory
 
 ```sh
 $ wget https://raw.githubusercontent.com/nelqatib/mbed-vim/master/plugin/mbed.vim -O ~/.vim/plugin/mbed.vim
@@ -35,8 +35,9 @@ $ wget https://raw.githubusercontent.com/nelqatib/mbed-vim/master/plugin/mbed.vi
 <leader>d:   Import missing dependencies.
 <leader>a:   Prompt for an mbed library to add.
 <leader>r:   Prompt for an mbed library to remove.
+<leader>l:   Display dependency tree
 <F9>:        Close the error buffer (when open).
-<F11>:       Set the current application's target and toolchain.
+<F12>:       Set the current application's target and toolchain.
 ```
 
 ## Commands
