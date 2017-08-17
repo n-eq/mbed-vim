@@ -20,6 +20,7 @@
 " <leader>d:  Import missing dependencies
 " <leader>a:  Prompt for an mbed library to add
 " <leader>r:  Prompt for an mbed library to remove
+" <leader>l:  Display the dependency tree
 " <F9>:       Close the error buffer (when open)
 " <F11>:      Set the current application's target and toolchain 
 "
@@ -236,6 +237,7 @@ map <leader>t  :call MbedTest()<CR>
 map <leader>d  :call MbedDeploy()<CR>
 map <leader>a  :call MbedAdd("")<CR>
 map <leader>r  :call MbedRemove("")<CR>
+map <leader>l  :call MbedList()<CR>
 map <F9>       :call CloseErrorBuffer()<CR>
 map <F11>      :call MbedGetTargetandToolchain(1)<CR>
 
