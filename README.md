@@ -1,6 +1,6 @@
 # mbed-vim
 
-[![version](https://img.shields.io/badge/version-v0.1-grey.svg)](https://github.com/nelqatib/mbed-vim/releases)
+[![version](https://img.shields.io/badge/version-v0.2-blue.svg)](https://github.com/nelqatib/mbed-vim/releases)
 [![Build Status](https://travis-ci.org/nelqatib/mbed-vim.svg?branch=master)](https://travis-ci.org/nelqatib/mbed-vim)
 [![license](http://img.shields.io/badge/license-mit-blue.svg)](https://opensource.org/licenses/MIT)
 

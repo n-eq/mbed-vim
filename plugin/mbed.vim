@@ -206,18 +206,14 @@ function! MbedList()
     if l:newheight < winheight(0)
       execute "resize " . l:newheight
     endif
-  else
-    echo "@o is empty.."
   endif
 endfunction
 
-" TODO
 function! MbedTest()
   execute 'wa'
   let @t = system("mbed test")
   if !empty(@t)
-    " TODO: find a pattern in the output to notify that the tests were
-    " successful
+    " TODO: find a pattern in the output to notify that the tests were successful
     vnew
     set buftype=nofile
     silent put=@t
