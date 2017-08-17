@@ -1,6 +1,6 @@
 # mbed-vim
 
-[![version](https://img.shields.io/badge/version-v0.2-blue.svg)](https://github.com/nelqatib/mbed-vim/releases)
+[![version](https://img.shields.io/badge/version-v0.2-red.svg)](https://github.com/nelqatib/mbed-vim/releases)
 [![Build Status](https://travis-ci.org/nelqatib/mbed-vim.svg?branch=master)](https://travis-ci.org/nelqatib/mbed-vim)
 [![license](http://img.shields.io/badge/license-mit-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -21,7 +21,9 @@ $ cp mbed-vim/plugin/mbed.vim ~/.vim/plugin
 $ wget https://raw.githubusercontent.com/nelqatib/mbed-vim/master/plugin/mbed.vim -O ~/.vim/plugin/mbed.vim
 ```
 
-## Default key mappings
+## Features
+
+### Default key mappings
 
 ```vim
 <leader>c:   Compile the current application.
@@ -40,7 +42,7 @@ $ wget https://raw.githubusercontent.com/nelqatib/mbed-vim/master/plugin/mbed.vi
 <F12>:       Set the current application's target and toolchain.
 ```
 
-## Commands
+### Commands
 
 ```vim
 Add <library_name>        Add the specified library. When no argument is given,
@@ -50,3 +52,11 @@ Remove <library_name>     Remove the specified library. When no argument is give
 SetToolchain <toolchain>  Set a toolchain (ARM, GCC_ARM, IAR).
 SetTarget <target>        Set a target.
 ```
+
+## Contributing
+
+Feel free to contribute to this project, either by [opening issues](https://github.com/nelqatib/mbed-vim/issues/new) or by [forking](https://github.com/nelqatib/mbed-vim#fork-destination-box) the repository and [opening pull requests](https://github.com/nelqatib/mbed-vim/compare). 
+
+## License
+
+This project is licensed under MIT, see `LICENSE` file for more.
