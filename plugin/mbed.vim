@@ -34,9 +34,9 @@
 " Additionally, you can specify the values of these variables in your vim
 " configuration file, to suit this plugin to your needs (in case you always
 " use the same mbed target/toolchain):
-"   g:mbed_target --      The name of your target. mbed CLI doesn't check that your
+"   w:mbed_target --      The name of your target. mbed CLI doesn't check that your
 "                         target name is correct, so make sure you don't misspell it.
-"   g:mbed_toolchain --   The name of the used toolchain (ARM, GCC_ARM, IAR).
+"   w:mbed_toolchain --   The name of the used toolchain (ARM, GCC_ARM, IAR).
 "
 " Notes:
 "   When you execute an unsuccessful "compile" command an "error buffer" is open 
@@ -49,43 +49,55 @@
 
 " Global variables
 " XXX: variables should be local to the current window or global?
-if !exists( "g:mbed_target" )
-  let g:mbed_target = ""
+if !exists( "w:mbed_target" )
+  let w:mbed_target = ""
 endif
 
-if !exists( "g:mbed_toolchain" )
-  let g:mbed_toolchain = ""
+if !exists( "w:mbed_toolchain" )
+  let w:mbed_toolchain = ""
 endif
 
 function! MbedGetTargetandToolchain( force )
   let l:mbed_tools_exist = system("which mbed")
-  if l:mbed_tools_exist == ""
+  if v:shell_error != 0
     echoe "Couldn't find mbed CLI tools."
-  else
-    if g:mbed_target == "" || a:force != 0
-      " if has("win32") " TODO (one day)
-      let l:target = system('mbed target')
-      " no target set
-      if l:target == "" 
-        let g:mbed_target = input("Please enter your mbed target name: ") 
-      elseif match(l:target, "ERROR") != -1
+    return
+  endif
+  if w:mbed_target == "" || a:force != 0
+    let l:target_list = system("mbed target -S")
+    " if has("win32") " TODO (one day)
+    let l:target = system('mbed target')
+    if v:shell_error != 0 || match(l:target, "No") != -1
+      echo "There was a problem checking the current target."
+      let l:target = input("Please enter your mbed target name: ") 
+      " see if we can find the target name in the list of supported targets
+      " FIXME: pitfall, when a single letter is given for example ("A"), match
+      " will assume it's OK, need to search for whole word...
+      if match(l:target_list, l:target) == -1
+        echo "\rThe target chosen isn't supported, please check
+              \ the spelling and your current version of mbed-OS then try again."
+        vnew | set buftype=nofile
+        let l:target_list = "\nSupported targets:\n\n" . l:target_list
+        put =l:target_list
+        normal ggj
         return
-      else
-        let g:mbed_target = l:target
       endif
     endif
+    let w:mbed_target = l:target
+  endif
 
-    if g:mbed_toolchain == "" || a:force != 0
-      " if has("win32") " TODO (one day)
-      let l:toolchain = system('mbed toolchain')
-      if l:toolchain == "" " no toolchain set
-        let g:mbed_toolchain = input("Please choose a toolchain (ARM, GCC_ARM, IAR): ") 
-      elseif match(l:toolchain, "ERROR") != -1
+  if w:mbed_toolchain == "" || a:force != 0
+    " if has("win32") " TODO (one day)
+    let l:toolchain = system('mbed toolchain')
+    if v:shell_error != 0 || match(l:toolchain, "No") != -1
+      echo "\rThere was a problem checking the current toolchain."
+      let l:toolchain = input("Please choose a toolchain (ARM, GCC_ARM, IAR): ") 
+      if l:toolchain != "ARM" && l:toolchain != "GCC_ARM" && l:toolchain != "IAR"
+        echo "\rWrong toolchain, please try again."
         return
-      else
-        let g:mbed_toolchain = l:toolchain
       endif
     endif
+    let w:mbed_toolchain = l:toolchain
   endif
 endfunction
 
@@ -149,7 +161,7 @@ endfunction
 function! MbedCompile(flag)
   call MbedGetTargetandToolchain ( 0 ) 
   execute 'wa'
-  let @o = system("mbed compile " . "-m" . g:mbed_target . " -t " . g:mbed_toolchain . " " . a:flag)
+  let @o = system("mbed compile " . "-m" . w:mbed_target . " -t " . w:mbed_toolchain . " " . a:flag)
   if !empty(@o)
     " <Image> pattern not found
     if match(getreg("o"), "Image") == -1
@@ -240,5 +252,5 @@ map <F12>      :call MbedGetTargetandToolchain(1)<CR>
 " commands
 command! -nargs=? Add :call MbedAdd("<args>")
 command! -nargs=? Remove :call MbedRemove("<args>")
-command! -nargs=1 SetToolchain :let g:mbed_toolchain="<args>"
-command! -nargs=1 SetTarget :let g:mbed_target="<args>"
+command! -nargs=1 SetToolchain :let w:mbed_toolchain="<args>"
+command! -nargs=1 SetTarget :let w:mbed_target="<args>"
