@@ -47,8 +47,6 @@
 "   is opened. You can close this buffer with <F9>. 
 "
 
-" Global variables
-" XXX: variables should be local to the current window or global?
 if !exists( "w:mbed_target" )
   let w:mbed_target = ""
 endif
@@ -58,7 +56,7 @@ if !exists( "w:mbed_toolchain" )
 endif
 
 function! MbedGetTargetandToolchain( force )
-  let l:mbed_tools_exist = system("which mbed")
+  call system("which mbed")
   if v:shell_error != 0
     echoe "Couldn't find mbed CLI tools."
     return
