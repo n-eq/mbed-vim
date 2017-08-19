@@ -15,7 +15,7 @@ $ git clone git@github.com:marrakchino/mbed-vim.git
 $ cp mbed-vim/plugin/mbed.vim ~/.vim/plugin
 ```
 
-* By downloading and saving the plugin file in your `plugin` directory using `wget`
+* By downloading the plugin file to your **plugin** directory using `wget`
 
 ```sh
 $ wget https://raw.githubusercontent.com/nelqatib/mbed-vim/master/plugin/mbed.vim -O ~/.vim/plugin/mbed.vim
