@@ -26,13 +26,13 @@ $ wget https://raw.githubusercontent.com/nelqatib/mbed-vim/master/plugin/mbed.vi
 * Compiling the current application with different options (clean, verbose mode, etc.) and displaying the
 output when the compilation is unseccessful.
 
-* Adding/Removing a library
+* Adding/Removing a library.
 
-* Setting the application's target/toolchain
+* Setting the application's target/toolchain.
 
-* Synchronize the dependencies.
+* Synchronizing the different dependencies.
 
-* Run tests.
+* Running tests.
 
 ### Default key mappings
 
