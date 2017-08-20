@@ -1,7 +1,7 @@
 " mbed.vim
 " author: marrakchino (nabilelqatib@gmail.com)
 " license: MIT (https://opensource.org/licenses/MIT)
-" version: 0.2
+" version: 1.0
 "
 " This file contains routines that may be used to execute mbed CLI commands
 " from within VIM. It depends on mbed OS. Therefore, 
@@ -57,7 +57,7 @@ endif
 
 function! MbedGetTargetandToolchain( force )
   call system("which mbed")
-  if v:shell_error != 0
+  if v:shell_error
     echoe "Couldn't find mbed CLI tools."
     return
   endif
@@ -65,7 +65,7 @@ function! MbedGetTargetandToolchain( force )
     let l:target_list = system("mbed target -S")
     " if has("win32") " TODO (one day)
     let l:target = system('mbed target')
-    if v:shell_error != 0 || match(l:target, "No") != -1
+    if v:shell_error || match(l:target, "No") != -1
       echo "There was a problem checking the current target."
       let l:target = input("Please enter your mbed target name: ") 
       " see if we can find the target name in the list of supported targets
@@ -87,7 +87,7 @@ function! MbedGetTargetandToolchain( force )
   if w:mbed_toolchain == "" || a:force != 0
     " if has("win32") " TODO (one day)
     let l:toolchain = system('mbed toolchain')
-    if v:shell_error != 0 || match(l:toolchain, "No") != -1
+    if v:shell_error || match(l:toolchain, "No") != -1
       echo "\rThere was a problem checking the current toolchain."
       let l:toolchain = input("Please choose a toolchain (ARM, GCC_ARM, IAR): ") 
       if l:toolchain != "ARM" && l:toolchain != "GCC_ARM" && l:toolchain != "IAR"
@@ -119,6 +119,7 @@ function! PasteContentToErrorBuffer()
         call CleanErrorBuffer()
       else
         execute "vert belowright sb " . g:error_buffer_number
+        set buftype=nofile
       endif
     else
       vnew
@@ -132,11 +133,8 @@ function! PasteContentToErrorBuffer()
   endif
 
   call CleanErrorBuffer()
-
-  " paste register content to buffer
   silent put=@o
-  " go to last line
-  normal G
+  normal ggddG
 endfunction
 
 " Clear the error buffer's content
@@ -155,11 +153,11 @@ function! CloseErrorBuffer()
   endif
 endfunction
 
-" Compile the current program with the given flag (-f, -c, -v, -vv)
-function! MbedCompile(flag)
-  call MbedGetTargetandToolchain ( 0 ) 
+" Compile the current program with the given flag(s) (-f, -c, -v, -vv)
+function! MbedCompile(flags)
+  call MbedGetTargetandToolchain(0) 
   execute 'wa'
-  let @o = system("mbed compile " . "-m" . w:mbed_target . " -t " . w:mbed_toolchain . " " . a:flag)
+  let @o = system("mbed compile" . " -m " . w:mbed_target . " -t " . w:mbed_toolchain . " " . a:flags)
   if !empty(@o)
     " <Image> pattern not found
     if match(getreg("o"), "Image") == -1
