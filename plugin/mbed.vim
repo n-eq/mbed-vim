@@ -81,7 +81,7 @@ function! MbedGetTargetandToolchain( force )
         return
       endif
     endif
-    let w:mbed_target = l:target
+    let w:mbed_target = substitute(substitute(l:target, '\[[^]]*\] ', '', 'g'), '\n', '', 'g')
   endif
 
   if w:mbed_toolchain == "" || a:force != 0
@@ -95,7 +95,7 @@ function! MbedGetTargetandToolchain( force )
         return
       endif
     endif
-    let w:mbed_toolchain = l:toolchain
+    let w:mbed_toolchain = substitute(substitute(l:target, '\[[^]]*\] ', '', 'g'), '\n', '', 'g')
   endif
 endfunction
 
