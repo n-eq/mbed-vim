@@ -203,7 +203,7 @@ function! MbedList()
   " XXX: if @o == "" ??
   if !empty(@o)
     " no output 
-    new
+    new | set buftype = nofile
     silent put=@o
     " Delete empty lines
     execute "g/^$/d"
