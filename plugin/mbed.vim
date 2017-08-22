@@ -47,13 +47,31 @@
 "   is opened. You can close this buffer with <F9>. 
 "
 
-if !exists( "w:mbed_target" )
+function! ReadTargetandToolchainFromConfigFile(file)
+  if filereadable(a:file)
+    if match(readfile(a:file), "TARGET")
+      let w:mbed_target = system("grep 'TARGET' " . a:file . " | cut -f2 -d=")
+    elseif match(readfile(a:file), "TOOLCHAIN")
+      let w:mbed_toolchain = system("grep 'TOOLCHAIN' " . a:file . " | cut -f2 -d=")
+    endif
+  endif
+endfunction
+
+if !exists("w:mbed_target")
   let w:mbed_target = ""
 endif
 
-if !exists( "w:mbed_toolchain" )
+if !exists("w:mbed_toolchain")
   let w:mbed_toolchain = ""
 endif
+
+" read from ~/.mbed if found
+call ReadTargetandToolchainFromConfigFile("~/.mbed")
+" eventually override the global configuration with the local .mbed file content
+call ReadTargetandToolchainFromConfigFile(".mbed")
+
+" sometimes a line break remains...
+let w:mbed_target = substitute(w:mbed_target, '\n', '', 'g')
 
 function! MbedGetTargetandToolchain( force )
   call system("which mbed")
@@ -200,7 +218,6 @@ endfunction
 
 function! MbedList()
   let @o = system("mbed ls")
-  " XXX: if @o == "" ??
   if !empty(@o)
     " no output 
     new | set buftype = nofile
