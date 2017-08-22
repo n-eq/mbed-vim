@@ -23,6 +23,17 @@ $ wget https://raw.githubusercontent.com/nelqatib/mbed-vim/master/plugin/mbed.vi
 
 ## Features
 
+* Compiling the current application with different options (clean, verbose mode, etc.) and displaying the
+output when the compilation is unsuccessful.
+
+* Adding/Removing a library.
+
+* Setting the application's target/toolchain.
+
+* Synchronizing the different dependencies.
+
+* Running tests and displaying the results.
+
 ### Default key mappings
 
 ```vim
