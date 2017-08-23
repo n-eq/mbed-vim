@@ -72,6 +72,7 @@ call ReadTargetandToolchainFromConfigFile(".mbed")
 
 " sometimes a line break remains...
 let w:mbed_target = substitute(w:mbed_target, '\n', '', 'g')
+let w:mbed_toolchain = substitute(w:mbed_toolchain, '\n', '', 'g')
 
 function! MbedGetTargetandToolchain( force )
   call system("which mbed")
