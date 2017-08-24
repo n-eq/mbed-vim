@@ -49,10 +49,11 @@
 
 function! ReadTargetandToolchainFromConfigFile(file)
   if filereadable(a:file)
-    if match(readfile(a:file), "TARGET")
-      let w:mbed_target = system("grep 'TARGET' " . a:file . " | cut -f2 -d=")
-    elseif match(readfile(a:file), "TOOLCHAIN")
-      let w:mbed_toolchain = system("grep 'TOOLCHAIN' " . a:file . " | cut -f2 -d=")
+    if match(readfile(a:file), "TARGET") != -1
+      let w:mbed_target = substitute(system("grep 'TARGET' " . a:file . " | cut -f2 -d="), '\n', '', 'g')
+    endif
+    if match(readfile(a:file), "TOOLCHAIN") != -1
+      let w:mbed_toolchain = substitute(system("grep 'TOOLCHAIN' " . a:file . " | cut -f2 -d="), '\n', '', 'g')
     endif
   endif
 endfunction
@@ -66,13 +67,9 @@ if !exists("w:mbed_toolchain")
 endif
 
 " read from ~/.mbed if found
-call ReadTargetandToolchainFromConfigFile("~/.mbed")
+call ReadTargetandToolchainFromConfigFile(expand("~/.mbed"))
 " eventually override the global configuration with the local .mbed file content
 call ReadTargetandToolchainFromConfigFile(".mbed")
-
-" sometimes a line break remains...
-let w:mbed_target = substitute(w:mbed_target, '\n', '', 'g')
-let w:mbed_toolchain = substitute(w:mbed_toolchain, '\n', '', 'g')
 
 function! MbedGetTargetandToolchain( force )
   call system("which mbed")
