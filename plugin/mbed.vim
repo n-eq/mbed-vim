@@ -218,7 +218,7 @@ function! MbedList()
   let @o = system("mbed ls")
   if !empty(@o)
     " no output 
-    new | set buftype = nofile
+    new | set buftype=nofile
     silent put=@o
     " Delete empty lines
     execute "g/^$/d"
