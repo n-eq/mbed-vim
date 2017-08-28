@@ -1,7 +1,7 @@
-" mbed.vim
-" author: marrakchino (nabilelqatib@gmail.com)
-" license: MIT (https://opensource.org/licenses/MIT)
-" version: 1.0
+" mbed.vim - Execute mbed CLI commands from within Vim
+" Author:    marrakchino (nabilelqatib@gmail.com)
+" License:   MIT (https://opensource.org/licenses/MIT)
+" Version:   1.0
 "
 " This file contains routines that may be used to execute mbed CLI commands
 " from within VIM. It depends on mbed OS. Therefore, 
