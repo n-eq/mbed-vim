@@ -1,7 +1,7 @@
 # mbed-vim
 
-[![version](https://img.shields.io/badge/version-v1.0-red.svg)](https://github.com/nelqatib/mbed-vim/releases)
-[![Build Status](https://travis-ci.org/nelqatib/mbed-vim.svg?branch=master)](https://travis-ci.org/nelqatib/mbed-vim)
+[![version](https://img.shields.io/badge/version-v1.0-red.svg)](https://github.com/marrakchino/mbed-vim/releases)
+[![Build Status](https://travis-ci.org/marrakchino/mbed-vim.svg?branch=master)](https://travis-ci.org/marrakchino/mbed-vim)
 [![license](http://img.shields.io/badge/license-mit-blue.svg)](https://opensource.org/licenses/MIT)
 
 
@@ -18,7 +18,7 @@ $ cp mbed-vim/plugin/mbed.vim ~/.vim/plugin
 * By downloading the plugin file to your **plugin** directory using `wget`
 
 ```sh
-$ wget https://raw.githubusercontent.com/nelqatib/mbed-vim/master/plugin/mbed.vim -O ~/.vim/plugin/mbed.vim
+$ wget https://raw.githubusercontent.com/marrakchino/mbed-vim/master/plugin/mbed.vim -O ~/.vim/plugin/mbed.vim
 ```
 
 ## Features
@@ -66,7 +66,7 @@ SetTarget <target>        Set a target.
 
 ## Contributing
 
-Feel free to contribute to this project, either by [opening issues](https://github.com/nelqatib/mbed-vim/issues/new) or by [forking](https://github.com/nelqatib/mbed-vim#fork-destination-box) the repository and [opening pull requests](https://github.com/nelqatib/mbed-vim/compare). 
+Feel free to contribute to this project, either by [opening issues](https://github.com/marrakchino/mbed-vim/issues/new) or by [forking](https://github.com/marrakchino/mbed-vim#fork-destination-box) the repository and [opening pull requests](https://github.com/marrakchino/mbed-vim/compare). 
 
 ## License
 
