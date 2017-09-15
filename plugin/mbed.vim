@@ -74,8 +74,8 @@ call ReadTargetandToolchainFromConfigFile(".mbed")
 function! MbedGetTargetandToolchain( force )
   call system("which mbed")
   if v:shell_error
-    echoe "Couldn't find mbed CLI tools."
-    return
+    echo "Couldn't find mbed CLI tools."
+    finish
   endif
   if w:mbed_target == "" || a:force != 0
     let l:target_list = system("mbed target -S")
