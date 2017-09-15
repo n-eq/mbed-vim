@@ -72,9 +72,8 @@ call ReadTargetandToolchainFromConfigFile(expand("~/.mbed"))
 call ReadTargetandToolchainFromConfigFile(".mbed")
 
 function! MbedGetTargetandToolchain( force )
-  call system("which mbed")
-  if v:shell_error
-    echo "Couldn't find mbed CLI tools."
+  if !executable('mbed')
+    echoerr "Couldn't find mbed CLI tools."
     finish
   endif
   if w:mbed_target == "" || a:force != 0
